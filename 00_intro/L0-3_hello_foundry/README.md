@@ -134,7 +134,7 @@ az cognitiveservices account project show `
   --name $FOUNDRY `
   --resource-group rg-ai103 `
   --project-name ai103-project `
-  --query 'properties.endpoints."AI Foundry API"' -o tsv
+  --query 'properties.endpoints' -o json | ConvertFrom-Json | Select-Object 'AI Foundry API'
 ```
 - 返ってきた URL（末尾が `/api/projects/ai103-project`）を、手順10で `.env` に貼ります。
 - ⚠️ **Build > Models のデプロイ詳細に出るエンドポイントとは別物**です。そちらを貼ると `main.py` は404になります。ポータルなら、プロジェクトの**ホーム（welcome）画面**に出る「プロジェクト エンドポイント」を使ってください。
