@@ -59,24 +59,25 @@ $FOUNDRY
 az cognitiveservices account deployment list `
   --name $FOUNDRY `
   --resource-group $RG `
-  --query "[].{name:name, model:properties.model.name, sku:sku.name, capacity:sku.capacity}" -o table
+  --query "[].{name:name, model:properties.model.name, version:properties.model.version, sku:sku.name, capacity:sku.capacity}" -o table
 ```
 `gpt-5.4` の行があればOKです。`capacity` はこのデプロイに割り当てたクォータ（単位は千 TPM）です。手順6の使用量には、この値に加えて、同じモデルのほかのデプロイ分も合算されます。
 
 ### 3. プロジェクトのエンドポイントを取得する
 ```powershell
-az cognitiveservices account project show `
+$endpoints = az cognitiveservices account project show `
   --name $FOUNDRY `
   --resource-group $RG `
   --project-name ai103-project `
-  --query 'properties.endpoints."AI Foundry API"' -o tsv
+  --query properties.endpoints -o json | ConvertFrom-Json
+$endpoints.'AI Foundry API'
 ```
 返ってきた URL（末尾が `/api/projects/ai103-project`）を、手順5で `.env` に貼ります。
 
 ### 4. 仮想環境を作って依存を入れる
 ```powershell
 python -m venv .venv
-./.venv/bin/Activate.ps1
+./.venv/Scripts/Activate.ps1
 pip install -r requirements.txt
 ```
 2行目は Codespaces（Linux）の PowerShell 用です。Windows の PowerShell では `.\.venv\Scripts\Activate.ps1` にします。
