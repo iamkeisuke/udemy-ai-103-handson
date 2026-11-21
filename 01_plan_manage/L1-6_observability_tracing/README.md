@@ -107,11 +107,12 @@ Name が `ai103-appinsights`、Category が `AppInsights` と表示されればO
 
 ### 6. プロジェクトのエンドポイントを取得する
 ```powershell
-az cognitiveservices account project show `
+$endpoints = az cognitiveservices account project show `
   --name $FOUNDRY `
   --resource-group $RG `
-  --project-name $PROJECT `
-  --query 'properties.endpoints."AI Foundry API"' -o tsv
+  --project-name ai103-project `
+  --query properties.endpoints -o json | ConvertFrom-Json
+$endpoints.'AI Foundry API'
 ```
 返ってきた URL（末尾が `/api/projects/ai103-project`）を、手順8で `.env` に貼ります。
 

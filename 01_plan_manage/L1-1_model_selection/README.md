@@ -73,11 +73,12 @@ az cognitiveservices account deployment list `
 
 ### 4. プロジェクトのエンドポイントを取得する
 ```powershell
-az cognitiveservices account project show `
+$endpoints = az cognitiveservices account project show `
   --name $FOUNDRY `
-  --resource-group rg-ai103 `
+  --resource-group $RG `
   --project-name ai103-project `
-  --query 'properties.endpoints."AI Foundry API"' -o tsv
+  --query properties.endpoints -o json | ConvertFrom-Json
+$endpoints.'AI Foundry API'
 ```
 返ってきた URL（末尾が `/api/projects/ai103-project`）を、手順6で `.env` に貼ります。L0-3 の `.env` と同じ値です。
 

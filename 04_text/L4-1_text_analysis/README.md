@@ -62,11 +62,12 @@ az cognitiveservices account deployment list `
 
 ### 3. 接続先を2つ取得する（プロジェクト／Language）
 ```powershell
-az cognitiveservices account project show `
+$endpoints = az cognitiveservices account project show `
   --name $FOUNDRY `
   --resource-group $RG `
   --project-name ai103-project `
-  --query 'properties.endpoints."AI Foundry API"' -o tsv
+  --query properties.endpoints -o json | ConvertFrom-Json
+$endpoints.'AI Foundry API'
 az cognitiveservices account show `
   --name $FOUNDRY `
   --resource-group $RG `
